@@ -76,16 +76,9 @@ Selectize is available at [cdnjs](https://cdnjs.com/libraries/selectize.js).
 	- [selectize.bootstrap3.scss](dist/scss/selectize.bootstrap3.scss) - Bootstrap 3 theme
 	- [selectize.bootstrap4.scss](dist/scss/selectize.bootstrap4.scss) - Bootstrap 4 theme
 	- [**plugins/**](dist/scss/plugins) — Individual plugin styles
-- [**less/**](dist/less)
-	- [selectize.less](dist/less/selectize.less) — Core styles
-	- [selectize.default.less](dist/less/selectize.default.less) — Default theme
-	- [selectize.bootstrap2.less](dist/less/selectize.bootstrap2.less) — Bootstrap 2 theme
-	- [selectize.bootstrap3.less](dist/less/selectize.bootstrap3.less) — Bootstrap 3 theme
-	- [**plugins/**](dist/less/plugins) — Individual plugin styles
 - [**css/**](dist/css)
 	- [selectize.css](dist/css/selectize.css) — Core styles
 	- [selectize.default.css](dist/css/selectize.default.css) — Default theme (with core styles)
-	- [selectize.bootstrap2.css](dist/css/selectize.bootstrap2.css) - Bootstrap 2 theme
 	- [selectize.bootstrap3.css](dist/css/selectize.bootstrap3.css) - Bootstrap 3 theme
 	- [selectize.bootstrap4.css](dist/css/selectize.bootstrap4.css) - Bootstrap 4 theme
 
@@ -96,14 +89,6 @@ $('select').selectize(options);
 ```
 
 The available options are [documented here](docs/usage.md).
-
-#### IE8 Support
-
-To support Internet Explorer 8, [es5-shim](https://github.com/kriskowal/es5-shim/) must be added your page.
-
-```html
-<!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.0.8/es5-shim.min.js"></script><![endif]-->
-```
 
 ### Custom Builds
 

@@ -1,7 +1,7 @@
 /**
- * selectize.js (v0.13.3)
+ * selectize.js (v1.0.0)
  * Copyright (c) 2013–2015 Brian Reavis & contributors
- * Copyright (c) 2020 Selectize Team & contributors
+ * Copyright (c) 2020-2021 Selectize Team & contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at:
@@ -13,7 +13,7 @@
  * governing permissions and limitations under the License.
  *
  * @author Brian Reavis <brian@thirdroute.com>
- * @author Ris Adams <selectize@risadams.com>  
+ * @author Ris Adams <selectize@risadams.com>
  */
 
 /*jshint curly:false */
@@ -3150,6 +3150,7 @@
 	
 	});
 	
+	
 	Selectize.define('dropdown_header', function(options) {
 		var self = this;
 	
@@ -3182,6 +3183,7 @@
 		})();
 	
 	});
+	
 	
 	Selectize.define('optgroup_columns', function(options) {
 		var self = this;
@@ -3275,6 +3277,7 @@
 	
 	
 	});
+	
 	
 	Selectize.define('remove_button', function(options) {
 		options = $.extend({

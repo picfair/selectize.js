@@ -12,7 +12,7 @@
   ],
   "main": "dist/js/selectize.js",
   "description": "Selectize is a jQuery-based custom <select> UI control. Useful for tagging, contact lists, country selectors, etc.",
-  "version": "0.13.3",
+  "version": "1.0.0",
   "author": "Brian Reavis <brian@thirdroute.com>",
   "contributors": [
     "Ris Adams <selectize@risadams.com>"
@@ -29,9 +29,9 @@
   "devDependencies": {
     "@types/jquery": "^3.5.5",
     "bootstrap-sass": "^3.4.1",
-    "bootstrap2": "npm:bootstrap-2.3.2@1.0.0",
     "bootstrap3": "npm:bootstrap@3.4.1",
     "bootstrap4": "npm:bootstrap@4.5.3",
+    "bootstrap5": "npm:bootstrap@5.0.1",
     "chai": "^4.3.4",
     "grunt": "~1.4.1",
     "grunt-cli": "^1.4.3",
@@ -39,7 +39,6 @@
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-connect": "3.0.0",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-less": "^2.1.0",
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-contrib-watch": "1.1.0",
     "grunt-replace": "^2.0.2",

@@ -7,7 +7,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-contrib-clean");
   grunt.loadNpmTasks("grunt-contrib-connect");
   grunt.loadNpmTasks("grunt-contrib-copy");
-  grunt.loadNpmTasks("grunt-contrib-less");
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-replace");
 
@@ -16,17 +15,11 @@ module.exports = function (grunt) {
   grunt.registerTask("configure", ["clean:pre"]);
 
   grunt.registerTask("compile", [
-    "copy:less",
-    "copy:less_plugins",
     "copy:scss",
     "copy:scss_dist",
     "copy:scss_plugins",
-    "concat:less_theme_dependencies",
-    "concat:less_plugins",
     "concat:js",
-    "less:build",
     "sass:build",
-    "clean_bootstrap2_css",
     "replace",
     "build_standalone",
     "uglify",
@@ -37,20 +30,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask("serve", ["connect", "watch"]);
 
-  grunt.registerTask(
-    "clean_bootstrap2_css",
-    "Cleans CSS rules occurring before the header comment.",
-    function () {
-      var file = "dist/css/selectize.bootstrap2.css";
-      var source = fs.readFileSync(file, "utf8");
-      grunt.file.write(file, source.replace(/^(.|\s)+?\/\*/m, "/*"));
-      grunt.log.writeln('Cleaned "' + file + '".');
-    }
-  );
-
   grunt.registerTask("build_standalone", "", function () {
-    var files,
-      i,
+    var i,
       n,
       source,
       name,
@@ -98,8 +79,6 @@ module.exports = function (grunt) {
     "node_modules/microplugin/src/microplugin.js",
   ];
 
-  var less_imports = [];
-  var less_plugin_files = [];
   var scss_plugin_files = [];
 
   // enumerate plugins
@@ -114,19 +93,6 @@ module.exports = function (grunt) {
 
     // javascript
     files_js.push("src/plugins/" + selector_plugins + "/*.js");
-
-    // less (css)
-    var matched_files = grunt.file.expand([
-      "src/plugins/" + selector_plugins + "/plugin.less",
-    ]);
-    for (var i = 0, n = matched_files.length; i < n; i++) {
-      var plugin_name = matched_files[i].match(/src\/plugins\/(.+?)\//)[1];
-      less_imports.push('@import "plugins/' + plugin_name + '";');
-      less_plugin_files.push({
-        src: matched_files[i],
-        dest: "dist/less/plugins/" + plugin_name + ".less",
-      });
-    }
 
     // scss (css)
     var matched_files = grunt.file.expand([
@@ -152,17 +118,6 @@ module.exports = function (grunt) {
       post: ["**/*.tmp*"],
     },
     copy: {
-      less: {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: ["src/less/*.less"],
-            dest: "dist/less",
-          },
-        ],
-      },
-      less_plugins: { files: less_plugin_files, },
       scss: {
         files: [
           {
@@ -178,12 +133,12 @@ module.exports = function (grunt) {
           {
             expand: true,
             flatten: true,
-            src: ["src/scss/*.scss"],
+            src: ["build/scss/*.scss"],
             dest: "dist/scss",
           },
         ],
       },
-      scss_plugins: { files: scss_plugin_files, },
+      scss_plugins: { files: scss_plugin_files },
     },
 
     replace: {
@@ -197,8 +152,7 @@ module.exports = function (grunt) {
           },
         },
         files: [
-          { src: ["src/.wrapper.js"], dest: "dist/js/selectize.js" },
-          { src: ["src/less/.wrapper.css"], dest: "dist/css/selectize.css" },
+          { src: ["src/.wrapper.js"], dest: "dist/js/selectize.js" }
         ],
       },
       css_post: {
@@ -209,14 +163,7 @@ module.exports = function (grunt) {
         },
         files: [
           { expand: true, flatten: false, src: ["dist/css/*.css"], dest: "" },
-          { expand: true, flatten: false, src: ["dist/less/*.less"], dest: "" },
           { expand: true, flatten: false, src: ["dist/scss/*.scss"], dest: "" },
-          {
-            expand: true,
-            flatten: false,
-            src: ["dist/less/plugins/*.less"],
-            dest: "",
-          },
           {
             expand: true,
             flatten: false,
@@ -236,22 +183,20 @@ module.exports = function (grunt) {
         files: [
           {
             "dist/css/selectize.css": ["src/scss/selectize.scss"],
-            "dist/css/selectize.default.css": ["src/scss/selectize.default.scss",],
-            "dist/css/selectize.bootstrap3.css": ["src/scss/selectize.bootstrap3.scss",],
-            "dist/css/selectize.bootstrap4.css": ["src/scss/selectize.bootstrap4.scss",],
+            "dist/css/selectize.default.css": [
+              "src/scss/selectize.default.scss",
+            ],
+            "dist/css/selectize.bootstrap3.css": [
+              "src/scss/selectize.bootstrap3.scss",
+            ],
+            "dist/css/selectize.bootstrap4.css": [
+              "src/scss/selectize.bootstrap4.scss",
+            ],
+            "dist/css/selectize.bootstrap5.css": [
+              "src/scss/selectize.bootstrap5.scss",
+            ],
           },
         ],
-      },
-    },
-    less: {
-      options: {
-        compress: false,
-      },
-      build: {
-        files: {
-          "dist/css/selectize.legacy.css": ["dist/less/selectize.legacy.less"],
-          "dist/css/selectize.bootstrap2.css": ["dist/less/selectize.bootstrap2.tmp.less",],
-        },
       },
     },
     concat: {
@@ -260,47 +205,34 @@ module.exports = function (grunt) {
         separator: grunt.util.linefeed + grunt.util.linefeed,
       },
       js: {
-        files: {"build/js/selectize.js": files_js,},
-      },
-      less_plugins: {
-        options: {
-          banner: less_imports.join("\n") + grunt.util.linefeed + grunt.util.linefeed,
-        },
-        files: {
-          "dist/less/selectize.less": ["dist/less/selectize.less"],
-        },
-      },
-      less_theme_dependencies: {
-        options: { stripBanners: false },
-        files: {
-          "dist/less/selectize.bootstrap2.tmp.less": [
-            "node_modules/bootstrap2/less/variables.less",
-            "node_modules/bootstrap2/less/mixins.less",
-            "dist/less/selectize.bootstrap2.less",
-          ],
-        },
+        files: { "build/js/selectize.js": files_js },
       },
     },
     connect: {
       server: {
         options: {
           port: 4000,
-          hostname: '*',
-        }
-      }
+          hostname: "*",
+        },
+      },
     },
     uglify: {
       main: {
         options: {
-          banner: "/*! selectize.js - v<%= pkg.version %> | https://github.com/selectize/selectize.js | Apache License (v2) */\n",
+          banner:
+            "/*! selectize.js - v<%= pkg.version %> | https://github.com/selectize/selectize.js | Apache License (v2) */\n",
           report: "gzip",
           "ascii-only": true,
-          mangle: false
+          mangle: false,
         },
         files: {
           "dist/js/selectize.min.js": ["build/js/selectize.js"],
-          "dist/js/standalone/selectize.js": [ "build/js/standalone/selectize.js", ],
-          "dist/js/standalone/selectize.min.js": [ "build/js/standalone/selectize.js", ],
+          "dist/js/standalone/selectize.js": [
+            "build/js/standalone/selectize.js",
+          ],
+          "dist/js/standalone/selectize.min.js": [
+            "build/js/standalone/selectize.js",
+          ],
         },
       },
     },
